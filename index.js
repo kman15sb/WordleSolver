@@ -1,4 +1,5 @@
 const initializedList = require('./letterArrLong.json')
+const frqMap = require('./frqMap.json')
 
 timer = (name) => {
     var start = new Date();
@@ -11,12 +12,17 @@ timer = (name) => {
     }
 };
 
-var bLetters = 'taescnybdfl'
-var yLetters = 'our'
-var gLetters = ['', '', '', '', 'r']
+var bLetters = 'tr'
+var yLetters = ['', '', '', 'e', 's']
+var gLetters = ['', 'a', '', '', '']
 
 looseFilter = (word, arr) => {
-    return word.some(letter => arr.includes(letter))
+    for (let i = 0; i < word.length; i++) {
+        if (!word.includes(arr[i])) {
+            return false
+        }
+    }
+    return true
 }
 
 strictFilter = (word, arr) => {
@@ -28,9 +34,18 @@ strictFilter = (word, arr) => {
     return true
 }
 
-exactPlacement = (word, arr) => {
+whitelistPlacement = (word, arr) => {
     for (let i = 0; i < word.length; i++) {
         if (arr[i].length == 1 && word[i] != arr[i]) {
+            return false
+        }
+    }
+    return true
+}
+
+blacklistPlacement = (word, arr) => {
+    for (let i = 0; i < word.length; i++) {
+        if (arr[i].length == 1 && word[i] == arr[i]) {
             return false
         }
     }
@@ -40,7 +55,7 @@ exactPlacement = (word, arr) => {
 newList = (words, blankLetters, includedLetters, exactLetters) => {
     let wordArr = []
     for (let i = 0; i < words.length; i++) {
-        if (!looseFilter(words[i], blankLetters.split('')) && strictFilter(words[i], includedLetters.split('')) && exactPlacement(words[i], exactLetters)) {
+        if (!looseFilter(words[i], blankLetters.split('')) && looseFilter(words[i], includedLetters) && blacklistPlacement(words[i], includedLetters) && whitelistPlacement(words[i], exactLetters)) {
             wordArr.push(words[i])
         }
     }
@@ -101,6 +116,19 @@ var t = timer('Guess')
 
 let list = newList(initializedList, bLetters, yLetters, gLetters)
 let nextGuess = guessNext(list)
-console.log('Guess: ' + list[nextGuess[1]].join(''), 'Entropy: ' + nextGuess[0])
+
+// let tempSum = 0
+// for (let i = 0; i < list.length; i++) {
+//     tempSum += frqMap[0][list[i].join('')]
+// }
+// for (let i = 0; i < list.length; i++) {
+//     if (frqMap[0][list[i].join('')] / tempSum * 100 > 1) {
+//         console.log(list[i].join(''), (frqMap[0][list[i].join('')] / tempSum * 100).toFixed(2)+'%')
+//     }
+// }
+
+// console.log('Guess: ' + list[nextGuess[1]].join(''), 'Entropy: ' + nextGuess[0])
+
+console.log(list)
 
 t.stop()
