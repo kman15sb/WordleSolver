@@ -12,12 +12,12 @@ timer = (name) => {
     }
 };
 
-var bLetters = ''
+var bLetters = 'trc'
 var yLetters = ['', '', '', '', '']
-var gLetters = ['', '', '', '', '']
+var gLetters = ['', 'a', 'u', 's', 'e']
 
 looseFilter = (word, arr) => {
-    for (let i = 0; i < word.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         if (!word.includes(arr[i]) && arr[i] != '') {
             return false
         }
@@ -26,7 +26,7 @@ looseFilter = (word, arr) => {
 }
 
 looseFilter2 = (word, arr) => {
-    for (let i = 0; i < word.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         if (arr.length > 0 && word.includes(arr[i])) {
             return false
         }
@@ -105,39 +105,29 @@ getPatterns = (words, index) => {
 }
 
 guessNext = (words) => {
+    let sum = 0
+    for (let i = 0; i < words.length; i++) {
+        sum += frqMap[0][words[i].join('')]
+    }
+
     let max = [0, 0]
     for (let i = 0; i < words.length; i++) {
         let patterns = getPatterns(words, i)
         let e = entropy(patterns)
-        if (e > max[0]) {
-            max = [e, i]
+        let pe = ((frqMap[0][list[i].join('')] / sum * 100) * e)
+        if (pe > max[0]) {
+            max = [pe, i]
         }
     }
     return max
 }
-
-// likely = (words) => {
-//     for (let i = 0; i < words.length; i++) {
-//         let sig = 1/(1+Math.exp(-100*))
-//     }
-// }
 
 var t = timer('Guess')
 
 let list = newList(initializedList, bLetters, yLetters, gLetters)
 let nextGuess = guessNext(list)
 
-let tempSum = 0
-for (let i = 0; i < list.length; i++) {
-    tempSum += frqMap[0][list[i].join('')]
-}
-for (let i = 0; i < list.length; i++) {
-    if (frqMap[0][list[i].join('')] / tempSum * 100 > 1) {
-        console.log(list[i].join(''), (frqMap[0][list[i].join('')] / tempSum * 100).toFixed(2)+'%')
-    }
-}
-
-console.log('Guess: ' + list[nextGuess[1]].join(''), 'Entropy: ' + nextGuess[0])
+console.log('Guess: ' + list[nextGuess[1]].join(''), ', Entropy in context: ' + nextGuess[0])
 
 
 t.stop()
