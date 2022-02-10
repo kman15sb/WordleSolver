@@ -12,53 +12,73 @@ timer = (name) => {
     }
 };
 
-var bLetters = 'tcr'
-var yLetters = ['', '', '', 'e', 's']
+var bLetters = 'tr'
+var yLetters = ['', '', '', '', 'a']
 var gLetters = ['', 'a', 'u', 's', 'e']
 
 looseFilter = (word, arr) => {
-    for (let i = 0; i < word.length; i++) {
-        if (arr.length > 0 && word.includes(arr[i])) {
-            return true
+    if (arr.length > 0) {
+        for (let i = 0; i < word.length; i++) {
+            if (arr.length > 0 && word.includes(arr[i])) {
+                return true
+            }
         }
+        return false
+    } else {
+        return true
     }
-    return false
 }
 
 looseFilter2 = (word, arr) => {
-    for (let i = 0; i < word.length; i++) {
-        if (arr.length > 0 && word.includes(arr[i])) {
-            return false
+    if (arr.length > 0) {
+        for (let i = 0; i < word.length; i++) {
+            if (arr.length > 0 && word.includes(arr[i])) {
+                return false
+            }
         }
+        return true
+    } else {
+        return true
     }
-    return true
 }
 
 strictFilter = (word, arr) => {
-    for (let i = 0; i < arr.length; i++) {
-        if (!word.some(letter => arr[i].includes(letter))) {
-            return false
+    if (arr.length > 0) {
+        for (let i = 0; i < arr.length; i++) {
+            if (!word.some(letter => arr[i].includes(letter))) {
+                return false
+            }
         }
+        return true
+    } else {
+        return true
     }
-    return true
 }
 
 whitelistPlacement = (word, arr) => {
-    for (let i = 0; i < word.length; i++) {
-        if (arr[i].length == 1 && word[i] != arr[i]) {
-            return false
+    if (arr.length > 0) {
+        for (let i = 0; i < word.length; i++) {
+            if (arr[i].length == 1 && word[i] != arr[i]) {
+                return false
+            }
         }
+        return true
+    } else {
+        return true
     }
-    return true
 }
 
 blacklistPlacement = (word, arr) => {
-    for (let i = 0; i < word.length; i++) {
-        if (arr[i].length == 1 && word[i] == arr[i]) {
-            return false
+    if (arr.length > 0) {
+        for (let i = 0; i < word.length; i++) {
+            if (arr[i].length == 1 && word[i] == arr[i]) {
+                return false
+            }
         }
+        return true
+    } else {
+        return true
     }
-    return true
 }
 
 newList = (words, blankLetters, includedLetters, exactLetters) => {
