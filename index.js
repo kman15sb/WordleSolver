@@ -12,13 +12,22 @@ timer = (name) => {
     }
 };
 
-var bLetters = 'tr'
+var bLetters = 'tcr'
 var yLetters = ['', '', '', 'e', 's']
-var gLetters = ['', 'a', '', '', '']
+var gLetters = ['', 'a', 'u', 's', 'e']
 
 looseFilter = (word, arr) => {
     for (let i = 0; i < word.length; i++) {
-        if (!word.includes(arr[i])) {
+        if (arr.length > 0 && word.includes(arr[i])) {
+            return true
+        }
+    }
+    return false
+}
+
+looseFilter2 = (word, arr) => {
+    for (let i = 0; i < word.length; i++) {
+        if (arr.length > 0 && word.includes(arr[i])) {
             return false
         }
     }
@@ -55,7 +64,7 @@ blacklistPlacement = (word, arr) => {
 newList = (words, blankLetters, includedLetters, exactLetters) => {
     let wordArr = []
     for (let i = 0; i < words.length; i++) {
-        if (!looseFilter(words[i], blankLetters.split('')) && looseFilter(words[i], includedLetters) && blacklistPlacement(words[i], includedLetters) && whitelistPlacement(words[i], exactLetters)) {
+        if (looseFilter2(words[i], blankLetters.split('')) && looseFilter(words[i], includedLetters) && blacklistPlacement(words[i], includedLetters) && whitelistPlacement(words[i], exactLetters)) {
             wordArr.push(words[i])
         }
     }
@@ -117,18 +126,17 @@ var t = timer('Guess')
 let list = newList(initializedList, bLetters, yLetters, gLetters)
 let nextGuess = guessNext(list)
 
-// let tempSum = 0
-// for (let i = 0; i < list.length; i++) {
-//     tempSum += frqMap[0][list[i].join('')]
-// }
-// for (let i = 0; i < list.length; i++) {
-//     if (frqMap[0][list[i].join('')] / tempSum * 100 > 1) {
-//         console.log(list[i].join(''), (frqMap[0][list[i].join('')] / tempSum * 100).toFixed(2)+'%')
-//     }
-// }
+let tempSum = 0
+for (let i = 0; i < list.length; i++) {
+    tempSum += frqMap[0][list[i].join('')]
+}
+for (let i = 0; i < list.length; i++) {
+    if (frqMap[0][list[i].join('')] / tempSum * 100 > 1) {
+        console.log(list[i].join(''), (frqMap[0][list[i].join('')] / tempSum * 100).toFixed(2)+'%')
+    }
+}
 
-// console.log('Guess: ' + list[nextGuess[1]].join(''), 'Entropy: ' + nextGuess[0])
+console.log('Guess: ' + list[nextGuess[1]].join(''), 'Entropy: ' + nextGuess[0])
 
-console.log(list)
 
 t.stop()
