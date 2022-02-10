@@ -6,7 +6,7 @@ timer = (name) => {
         stop: () => {
             var end = new Date();
             var time = end.getTime() - start.getTime();
-            console.log('Timer:', name, 'finished in', time, 'ms');
+            console.log(name, 'finished in', time, 'ms');
         }
     }
 };
@@ -91,12 +91,16 @@ guessNext = (words) => {
     return max
 }
 
-var t = timer('test')
+// likely = (words) => {
+//     for (let i = 0; i < words.length; i++) {
+//         let sig = 1/(1+Math.exp(-100*))
+//     }
+// }
+
+var t = timer('Guess')
 
 let list = newList(initializedList, bLetters, yLetters, gLetters)
 let nextGuess = guessNext(list)
-console.log(list[nextGuess[1]], nextGuess[0])
+console.log('Guess: ' + list[nextGuess[1]].join(''), 'Entropy: ' + nextGuess[0])
 
 t.stop()
-
-
