@@ -12,9 +12,9 @@ timer = (name) => {
     }
 };
 
-var bLetters = 'trc'
+var bLetters = ''
 var yLetters = ['', '', '', '', '']
-var gLetters = ['', 'a', 'u', 's', 'e']
+var gLetters = ['', '', '', '', '']
 
 looseFilter = (word, arr) => {
     for (let i = 0; i < arr.length; i++) {
@@ -35,15 +35,6 @@ looseFilter2 = (word, arr) => {
 
 }
 
-strictFilter = (word, arr) => {
-    for (let i = 0; i < arr.length; i++) {
-        if (!word.some(letter => arr[i].includes(letter))) {
-            return false
-        }
-    }
-    return true
-}
-
 whitelistPlacement = (word, arr) => {
     for (let i = 0; i < word.length; i++) {
         if (arr[i].length == 1 && word[i] != arr[i]) {
@@ -55,8 +46,13 @@ whitelistPlacement = (word, arr) => {
 
 blacklistPlacement = (word, arr) => {
     for (let i = 0; i < word.length; i++) {
-        if (arr[i].length == 1 && word[i] == arr[i]) {
-            return false
+        if (arr[i] != '') {
+            let letterArr = arr[i].split('')
+            for (let j = 0; j < letterArr.length; j++) {
+                if (word[i] == letterArr[j]) {
+                    return false
+                }
+            }
         }
     }
     return true
@@ -127,7 +123,11 @@ var t = timer('Guess')
 let list = newList(initializedList, bLetters, yLetters, gLetters)
 let nextGuess = guessNext(list)
 
-console.log('Guess: ' + list[nextGuess[1]].join(''), ', Entropy in context: ' + nextGuess[0])
+if (list[nextGuess[1]] != undefined) {
+    console.log('Guess: ' + list[nextGuess[1]].join('') + ', Entropy Frq: ' + nextGuess[0])
+} else {
+    console.log('no result')
+}
 
 
 t.stop()
