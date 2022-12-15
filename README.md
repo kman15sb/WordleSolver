@@ -10,5 +10,7 @@ Usage:
 3. node index 
 
 ToDo:
+ 
 Add cli or ui to better input how correct each letter in the guess was
+
 Fix yLetters having multiple entries in one index sometimes causing errors
